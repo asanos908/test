@@ -117,7 +117,7 @@ stages:
     branch: master
     service: ${SAMPLE_REPO}
   triggers:
-  - type: commit
+  - type: stage
   jobs:
   - name: Build
     type: builder
@@ -145,7 +145,7 @@ stages:
     directory_offset: SFDParent/SFDTester
     artifact_dir: target/failsafe-reports/TEST-*.xml
     tester_type: simple
-    command: |-
+    COMMAND: |-
       #!/bin/bash
       # ここでテストを起動します
       AIF_URL=http://aif-mq-test.mybluemix.net
