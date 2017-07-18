@@ -7,6 +7,10 @@ stages:
     service: ${SAMPLE_REPO}
   triggers:
   - type: commit
+  properties:
+  - name: JAVA_HOME
+    value: /opt/IBM/java8
+    type: text
   jobs:
   - name: Build
     type: builder
@@ -26,11 +30,8 @@ stages:
   triggers:
   - type: stage
   properties:
-  - name: CF_APP_NAME
-    value: undefined
-    type: text
-  - name: APP_URL
-    value: undefined
+  - name: JAVA_HOME
+    value: /opt/IBM/java8
     type: text
   jobs:
   - name: Deploy
@@ -59,6 +60,10 @@ stages:
     service: ${SAMPLE_REPO}
   triggers:
   - type: commit
+  properties:
+  - name: JAVA_HOME
+    value: /opt/IBM/java8
+    type: text
   jobs:
   - name: Build
     type: builder
@@ -78,6 +83,10 @@ stages:
     job: Build
   triggers:
   - type: stage
+  properties:
+  - name: JAVA_HOME
+    value: /opt/IBM/java8
+    type: text
   properties:
   - name: CF_APP_NAME
     value: undefined
@@ -118,6 +127,13 @@ stages:
     service: ${SAMPLE_REPO}
   triggers:
   - type: stage
+  properties:
+  - name: JAVA_HOME
+    value: /opt/IBM/java8
+    type: text
+  - name: PATH
+    value: ${JAVA_HOME}/bin:$PATH
+    type: text
   jobs:
   - name: Build
     type: builder
@@ -142,7 +158,6 @@ stages:
   jobs:
   - name: Test
     type: tester
-    directory_offset: SFDParent/SFDTester
     tester_type: simple
     script: |-
       #!/bin/bash
@@ -159,5 +174,6 @@ stages:
       mvn install:install-file -Dfile=${WORKSPACE}/AIFParent/lib/com.ibm.cis.aif.jar -DgroupId=AIF -DartifactId=com.ibm.cis.aif -Dversion=1.1 -Dpackaging=jar -DgeneratePom=true
       mvn install:install-file -Dfile=${WORKSPACE}/AIFParent/lib/com.ibm.cis.aif.tools.et.jar -DgroupId=AIF -DartifactId=com.ibm.cis.aif.tools.et -Dversion=1.1 -Dpackaging=jar -DgeneratePom=true
       mvn integration-test  -Dtarget.host=${AIF_URL} -Dtarget.port=80 -Dcom.ibm.cis.aif.sfd.CloudantAccessor.dbName=aifdump -DJMeterPath=${JMeter_Path} -Dcom.ibm.cis.aif.sfd.SFDTestCase.contextURL=${AIF_URL}/aif -Dcom.ibm.cis.aif.sfd.CloudantAccessor.url=${CLOUDANT_URL}
-    enable_tests: true
+    directory_offset: SFDParent/SFDTester
+    enable_coverage: true
     test_file_pattern: 'target/failsafe-reports/TEST-*.xml'
