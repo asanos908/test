@@ -19,7 +19,7 @@ stages:
 - name: Deploy Stage(Stub)
   inputs:
   - type: job
-    stage: BUILD
+    stage: Build Stage(Stub)
     job: Build
   triggers:
   - type: stage
