@@ -1,6 +1,6 @@
 ---
 stages:
-- name: BUILD
+- name: Build Stage(Stub)
   inputs:
   - type: git
     branch: master
@@ -10,7 +10,7 @@ stages:
   jobs:
   - name: Build
     type: builder
-- name: DEPLOY
+- name: Deploy Stage(Stub)
   inputs:
   - type: job
     stage: BUILD
