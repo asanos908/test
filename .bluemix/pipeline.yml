@@ -14,7 +14,7 @@ stages:
   jobs:
   - name: Build
     type: builder
-    directory_offset: SFDParent
+    working_dir: SFDParent
     artifact_dir: ${WORKSPACE}/StubParent/StubEar/target
     build_type: maven
     script: |-
@@ -67,7 +67,7 @@ stages:
   jobs:
   - name: Build
     type: builder
-    directory_offset: AIFParent
+    working_dir: AIFParent
     artifact_dir: ${WORKSPACE}/AIFParent/AIF/target
     build_type: maven
     script: |-
@@ -137,7 +137,7 @@ stages:
   jobs:
   - name: Build
     type: builder
-    directory_offset: SFDParent/SFDEnvSet
+    working_dir: SFDParent/SFDEnvSet
     artifact_dir: target
     build_type: maven
     script: |-
