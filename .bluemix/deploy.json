@@ -33,9 +33,16 @@
             "type": "string",
             "pattern": "\\S"
         },
-        "test-param": {
+        "aif-url": {
             "description": {
-                "$ref": "#/messages/deploy.deploy.paramDescription"
+                "$ref": "#/messages/deploy.aifURLDescription"
+            },
+            "type": "string",
+            "pattern": "\\S"
+        },
+        "cloudant-url": {
+            "description": {
+                "$ref": "#/messages/deploy.cloudantURLDescription"
             },
             "type": "string",
             "pattern": "\\S"
@@ -63,9 +70,16 @@
             "type": "text",
             "readonly": false,
             "title": {
-                "$ref": "#/messages/deploy.testParam"
+                "$ref": "#/messages/deploy.aifURL"
             },
-            "key": "test-param"
+            "key": "aif-url"
+        },{
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.cloudantURL"
+            },
+            "key": "cloudant-url"
         },
         {
             "type": "table",
