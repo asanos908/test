@@ -33,7 +33,7 @@
             "type": "string",
             "pattern": "\\S"
         },
-        "test-prop": {
+        "test-param": {
             "description": {
                 "$ref": "#/messages/deploy.appDescription"
             },
@@ -59,6 +59,13 @@
                 "$ref": "#/messages/deploy.appName"
             },
             "key": "prod-app-name"
+        },{
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.appName"
+            },
+            "key": "test-param"
         },
         {
             "type": "table",
