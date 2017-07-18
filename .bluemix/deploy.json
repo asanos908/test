@@ -32,6 +32,13 @@
             },
             "type": "string",
             "pattern": "\\S"
+        },
+        "test-prop": {
+            "description": {
+                "$ref": "#/messages/deploy.appDescription"
+            },
+            "type": "string",
+            "pattern": "\\S"
         }
     },
     "required": [
