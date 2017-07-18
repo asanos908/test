@@ -158,7 +158,7 @@ stages:
   jobs:
   - name: Test
     type: tester
-    directory_offset: SFDParent/SFDTester
+    directory_offset: 'SFDParent/SFDTester'
     tester_type: simple
     script: |-
       #!/bin/bash
