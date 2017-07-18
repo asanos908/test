@@ -162,8 +162,8 @@ stages:
     script: |-
       #!/bin/bash
       # ここでテストを起動します
-      AIF_URL=${AIF_URL}
-      CLOUDANT_URL=${CLOUDANR_URL}
+      AIF_URL= ${AIF_URL}
+      CLOUDANT_URL= ${CLOUDANT_URL}
       JMeter_Path=${WORKSPACE}/SFDParent/apache-jmeter-2.8/bin/jmeter
       # Jmeter の実行時のバージョンを強制的にJava8にする。
       export JAVA_HOME=/opt/IBM/java8
