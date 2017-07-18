@@ -51,3 +51,112 @@ stages:
       #cf restage "${CF_APP}"
       # ==== enable logs ===============
       #cf logs "${CF_APP}"
+      
+- name: Build Stage(AIF)
+  inputs:
+  - type: git
+    branch: master
+    service: ${SAMPLE_REPO}
+  triggers:
+  - type: commit
+  jobs:
+  - name: Build
+    type: builder
+    directory_offset: AIFParent
+    artifact_dir: ${WORKSPACE}/AIFParent/AIF/target
+    build_type: maven
+    script: |-
+      #!/bin/bash
+      #mvn -B package -e -Pbluemix
+      mvn -B package -e 
+      cp -r ${WORKSPACE}/wlp ${WORKSPACE}/AIFParent/AIF/target/wlp    
+      
+- name: Deploy Stage(AIF)
+  inputs:
+  - type: job
+    stage: Build Stage(AIF)
+    job: Build
+  triggers:
+  - type: stage
+  properties:
+  - name: CF_APP_NAME
+    value: undefined
+    type: text
+  - name: APP_URL
+    value: undefined
+    type: text
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      region_id: ${PROD_REGION_ID}
+      organization: ${PROD_ORG_NAME}
+      space: ${PROD_SPACE_NAME}
+      application: AIF
+    script: |
+      #!/bin/bash
+      #サーバーパッケージ
+      cp AIF-0.0.1-SNAPSHOT.war wlp/usr/servers/defaultServer/apps/AIF-0.0.1-SNAPSHOT.war
+      chmod +x wlp/bin/*
+      wlp/bin/server package defaultServer --archive=was.zip --include=usr
+      # アプリのデプロイ、更新
+      #
+      cf push "${CF_APP}" -p wlp/usr/servers/defaultServer/was.zip -m 1024M -t 180 --no-start
+      # Liberty用の環境設定
+      cf set-env ${CF_APP} JBP_CONFIG_LIBERTY "app_archive: {features: [cdi-1.2, concurrent-1.0, jaxb-2.2, jndi-1.0, jaxws-2.2, jsonp-1.0, jaxrs-2.0, javaMail-1.5, json-1.0, jsf-2.2, localConnector-1.0, servlet-3.1, wasJmsClient-2.0, wasJmsServer-1.0, websocket-1.1,wmqJmsClient-2.0]}"
+      # システム変数定義
+      cf set-env ${CF_APP} JVM_ARGS "-Dcom.ibm.cis.aif.log.AIFLogger.isDumpEnable=true -Dcom.ibm.cis.aif.log.AIFLogger.vcapServiceName=cloudantNoSQLDB -Dcom.ibm.cis.aif.interceptor.OBStub.restStub=http://aif-devops-stub.w3ibm.mybluemix.net/StubAppRS"
+      # 上記設定の反映
+      cf restage ${CF_APP}
+      # アプリの起動
+      cf start ${CF_APP}
+
+- name: setEnv
+  inputs:
+  - type: git
+    branch: master
+    service: ${SAMPLE_REPO}
+  triggers:
+  - type: commit
+  jobs:
+  - name: Build
+    type: builder
+    directory_offset: SFDParent/SFDEnvSet
+    artifact_dir: target
+    build_type: maven
+    script: |-
+      #!/bin/bash
+      URL=https://aif-mq-test.mybluemix.net/aif
+      LIST=${WORKSPACE}/SFDParent/SFDEnvSet/URIConvert/BluemixConvertList.txt
+      mvn install
+      # 実行
+      java -cp "${ARCHIVE_DIR}/lib/*" com.ibm.cis.aif.sfd.URIConverter.OutboundURIConverter "$LIST" "$URL"
+
+- name: Test Stage
+  inputs:
+  - type: git
+    branch: master
+    service: ${SAMPLE_REPO}
+  triggers:
+  - type: stage
+  jobs:
+  - name: Test
+    type: tester
+    directory_offset: SFDParent/SFDTester
+    artifact_dir: target/failsafe-reports/TEST-*.xml
+    tester_type: simple
+    command: |-
+      #!/bin/bash
+      # ここでテストを起動します
+      AIF_URL=http://aif-mq-test.mybluemix.net
+      CLOUDANT_URL=https://f23b9b7d-3cb9-471b-88db-e39275cfc5f5-bluemix:1f1266c2623135080b8cf9580bbfd759cda3336c0a7fe9e663cc7cd4047b1435@f23b9b7d-3cb9-471b-88db-e39275cfc5f5-bluemix.cloudant.com
+      JMeter_Path=${WORKSPACE}/SFDParent/apache-jmeter-2.8/bin/jmeter
+      # Jmeter の実行時のバージョンを強制的にJava8にする。
+      export JAVA_HOME=/opt/IBM/java8
+      export PATH=${JAVA_HOME}/bin:$PATH
+      echo ======================================
+      javac -version
+      echo ======================================
+      mvn install:install-file -Dfile=${WORKSPACE}/AIFParent/lib/com.ibm.cis.aif.jar -DgroupId=AIF -DartifactId=com.ibm.cis.aif -Dversion=1.1 -Dpackaging=jar -DgeneratePom=true
+      mvn install:install-file -Dfile=${WORKSPACE}/AIFParent/lib/com.ibm.cis.aif.tools.et.jar -DgroupId=AIF -DartifactId=com.ibm.cis.aif.tools.et -Dversion=1.1 -Dpackaging=jar -DgeneratePom=true
+      mvn integration-test  -Dtarget.host=${AIF_URL} -Dtarget.port=80 -Dcom.ibm.cis.aif.sfd.CloudantAccessor.dbName=aifdump -DJMeterPath=${JMeter_Path} -Dcom.ibm.cis.aif.sfd.SFDTestCase.contextURL=${AIF_URL}/aif -Dcom.ibm.cis.aif.sfd.CloudantAccessor.url=${CLOUDANT_URL}
