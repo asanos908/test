@@ -63,7 +63,7 @@
             "type": "text",
             "readonly": false,
             "title": {
-                "$ref": "#/messages/deploy.appName"
+                "$ref": "#/messages/deploy.testParam"
             },
             "key": "test-param"
         },
