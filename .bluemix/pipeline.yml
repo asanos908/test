@@ -175,5 +175,6 @@ stages:
       mvn install:install-file -Dfile=${WORKSPACE}/AIFParent/lib/com.ibm.cis.aif.tools.et.jar -DgroupId=AIF -DartifactId=com.ibm.cis.aif.tools.et -Dversion=1.1 -Dpackaging=jar -DgeneratePom=true
       mvn integration-test  -Dtarget.host=${AIF_URL} -Dtarget.port=80 -Dcom.ibm.cis.aif.sfd.CloudantAccessor.dbName=aifdump -DJMeterPath=${JMeter_Path} -Dcom.ibm.cis.aif.sfd.SFDTestCase.contextURL=${AIF_URL}/aif -Dcom.ibm.cis.aif.sfd.CloudantAccessor.url=${CLOUDANT_URL}
     directory_offset: SFDParent/SFDTester
-    enable_coverage: true
+    enable_tests: true
     test_file_pattern: 'target/failsafe-reports/TEST-*.xml'
+    enable_coverage: true
