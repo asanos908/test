@@ -9,7 +9,10 @@ stages:
   - type: commit
   jobs:
   - name: Build
-    type: builder
+    type: maven
+    script: |
+      #!/bin/bash
+      mvn -B -X package
 - name: Deploy Stage(Stub)
   inputs:
   - type: job
