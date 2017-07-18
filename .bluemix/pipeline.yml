@@ -144,11 +144,11 @@ stages:
     type: tester
     directory_offset: SFDParent/SFDTester
     tester_type: simple
-    COMMAND: |-
+    script: |-
       #!/bin/bash
       # ここでテストを起動します
-      AIF_URL=http://aif-mq-test.mybluemix.net
-      CLOUDANT_URL=https://f23b9b7d-3cb9-471b-88db-e39275cfc5f5-bluemix:1f1266c2623135080b8cf9580bbfd759cda3336c0a7fe9e663cc7cd4047b1435@f23b9b7d-3cb9-471b-88db-e39275cfc5f5-bluemix.cloudant.com
+      AIF_URL=<your aif url>
+      CLOUDANT_URL=<your cloudant url>
       JMeter_Path=${WORKSPACE}/SFDParent/apache-jmeter-2.8/bin/jmeter
       # Jmeter の実行時のバージョンを強制的にJava8にする。
       export JAVA_HOME=/opt/IBM/java8
