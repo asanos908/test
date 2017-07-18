@@ -35,7 +35,7 @@
         },
         "test-param": {
             "description": {
-                "$ref": "#/messages/deploy.appDescription"
+                "$ref": "#/messages/deploy.deploy.paramDescription"
             },
             "type": "string",
             "pattern": "\\S"
