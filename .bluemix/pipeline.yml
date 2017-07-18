@@ -12,7 +12,7 @@ stages:
     type: builder
     artifact_dir: target
     build_type: maven
-    script: |-
+    build_script: |-
       #!/bin/bash
       # build the application 
       mvn -B package
