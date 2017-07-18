@@ -142,7 +142,7 @@ stages:
     build_type: maven
     script: |-
       #!/bin/bash
-      URL=https://aif-mq-test.mybluemix.net/aif
+      URL=${AIF_URL}/aif
       LIST=${WORKSPACE}/SFDParent/SFDEnvSet/URIConvert/BluemixConvertList.txt
       mvn install
       # 実行
@@ -162,8 +162,8 @@ stages:
     script: |-
       #!/bin/bash
       # ここでテストを起動します
-      AIF_URL=<your aif url>
-      CLOUDANT_URL=<your cloudant url>
+      AIF_URL=${AIF_URL}
+      CLOUDANT_URL=${CLOUDANR_URL}
       JMeter_Path=${WORKSPACE}/SFDParent/apache-jmeter-2.8/bin/jmeter
       # Jmeter の実行時のバージョンを強制的にJava8にする。
       export JAVA_HOME=/opt/IBM/java8
