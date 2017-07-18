@@ -13,17 +13,17 @@ template:
     - sample-repo
   info:
     git url: >-
-      [https://github.com/open-toolchain/simple-toolchain](https://github.com/open-toolchain/simple-toolchain)
+      [https://github.com/asanos908/test.git](https://github.com/asanos908/test.git)
     git branch: >-
-      [master](https://github.com/open-toolchain/simple-toolchain/tree/master)
+      [master](https://github.com/asanos908/test/tree/master)
 toolchain:
-  name: 'simple-toolchain-{{timestamp}}'
+  name: 'sfd-toolchain-template-{{timestamp}}'
   template:
     getting_started:
       $ref: "#/messages/template.gettingStarted"
 services:
   sample-repo:
-    service_id: githubpublic
+    service_id: githubenterprise
     parameters:
       repo_name: '{{toolchain.name}}'
       repo_url: 'https://github.com/open-toolchain/node-hello-world'
