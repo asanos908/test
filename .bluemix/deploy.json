@@ -46,13 +46,21 @@
             },
             "type": "string",
             "pattern": "\\S"
+        },
+        "jmeter-path": {
+            "description": {
+                "$ref": "#/messages/deploy.jmeterPathDescription"
+            },
+            "type": "string",
         }
     },
     "required": [
         "prod-region",
         "prod-organization",
         "prod-space",
-        "prod-app-name"
+        "prod-app-name",
+        "cloudant-url",
+        "aif-url"
     ],
     "form": [
         {
@@ -80,6 +88,13 @@
                 "$ref": "#/messages/deploy.cloudantURL"
             },
             "key": "cloudant-url"
+        },{
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.jmeterPath"
+            },
+            "key": "jmeter-path"
         },
         {
             "type": "table",
