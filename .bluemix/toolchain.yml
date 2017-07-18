@@ -18,6 +18,7 @@ template:
       [master](https://github.com/asanos908/test/tree/master)
 toolchain:
   name: 'sfd-toolchain-template-{{timestamp}}'
+  aif-url: 'AIF'
   template:
     getting_started:
       $ref: "#/messages/template.gettingStarted"
