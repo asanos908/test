@@ -10,12 +10,14 @@ stages:
   jobs:
   - name: Build
     type: builder
-    artifact_dir: target
+    directory_offset: SFDParent
+    artifact_dir: ${WORKSPACE}/StubParent/StubEar/target
     build_type: maven
     script: |-
       #!/bin/bash
       # build the application 
       mvn -B package       
+      
 - name: Deploy Stage(Stub)
   inputs:
   - type: job
@@ -31,37 +33,21 @@ stages:
     value: undefined
     type: text
   jobs:
-  - name: Blue-Green Deploy
+  - name: Deploy
     type: deployer
     target:
       region_id: ${PROD_REGION_ID}
       organization: ${PROD_ORG_NAME}
       space: ${PROD_SPACE_NAME}
-      application: ${CF_APP_NAME}
+      application: AIF_Stub
     script: |
       #!/bin/bash
-      # Push app
-      if ! cf app $CF_APP; then  
-        cf push $CF_APP
-      else
-        OLD_CF_APP=${CF_APP}-OLD-$(date +"%s")
-        rollback() {
-          set +e  
-          if cf app $OLD_CF_APP; then
-            cf logs $CF_APP --recent
-            cf delete $CF_APP -f
-            cf rename $OLD_CF_APP $CF_APP
-          fi
-          exit 1
-        }
-        set -e
-        trap rollback ERR
-        cf rename $CF_APP $OLD_CF_APP
-        cf push $CF_APP
-        cf delete $OLD_CF_APP -f
-      fi
-      # Export app name and URL for use in later Pipeline jobs
-      export CF_APP_NAME="$CF_APP"
-      export APP_URL=http://$(cf app $CF_APP_NAME | grep urls: | awk '{print $2}')
-      # View logs
-      #cf logs "${CF_APP}" --recent
+      cf push "${CF_APP}" -p StubEar-0.0.1-SNAPSHOT.ear -m 256M --no-start
+      cf set-env ${CF_APP} JBP_CONFIG_LIBERTY "app_archive: {features: [cdi-1.2, concurrent-1.0, jaxb-2.2, jndi-1.0, jaxws-2.2, jsonp-1.0, jaxrs-2.0, javaMail-1.5, json-1.0, jsf-2.2, localConnector-1.0, servlet-3.1, wasJmsClient-2.0, wasJmsServer-1.0, websocket-1.1]}"
+      cf start "${CF_APP}"
+      # ==== enable shell ==============
+      #echo === "${CF_APP}" ===
+      #cf set-env "${CF_APP}" BLUEMIX_APP_MGMT_ENABLE devconsole+shell
+      #cf restage "${CF_APP}"
+      # ==== enable logs ===============
+      #cf logs "${CF_APP}"
