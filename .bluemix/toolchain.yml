@@ -49,6 +49,7 @@ services:
           PROD_REGION_ID: '{{form.pipeline.parameters.prod-region}}'
           AIF_URL: '{{form.pipeline.parameters.aif-url}}'
           CLOUDANT_URL: '{{form.pipeline.parameters.cloudant-url}}'
+          JMETER_PATH: '{{form.pipeline.parameters.jmeter-path}}'
         execute: true
   webide:
     service_id: orion
