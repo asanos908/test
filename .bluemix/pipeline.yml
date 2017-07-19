@@ -155,6 +155,16 @@ stages:
     service: ${SAMPLE_REPO}
   triggers:
   - type: stage
+  properties:
+  - name: AIF_URL
+    value: ${AIF_URL}
+    type: text
+  - name: CLOUDANT_URL
+    value: ${CLOUDANT_URL}
+    type: text
+  - name: JMeter_Path
+    value: ${JMETER_PATH}
+    type: text
   jobs:
   - name: Test
     type: tester
@@ -162,9 +172,6 @@ stages:
     script: |-
       #!/bin/bash
       # ここでテストを起動します
-      AIF_URL= ${AIF_URL}
-      CLOUDANT_URL= ${CLOUDANT_URL}
-      JMeter_Path=${WORKSPACE}/SFDParent/apache-jmeter-2.8/bin/jmeter
       # Jmeter の実行時のバージョンを強制的にJava8にする。
       export JAVA_HOME=/opt/IBM/java8
       export PATH=${JAVA_HOME}/bin:$PATH
