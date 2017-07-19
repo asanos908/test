@@ -57,5 +57,6 @@ form:
   pipeline:
     parameters:
       prod-app-name: '{{services.sample-repo.parameters.repo_name}}'
+      jmeter-path: ${WORKSPACE}/SFDParent/apache-jmeter-2.8/bin/jmeter
     schema:
       $ref: deploy.json
