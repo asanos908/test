@@ -1,6 +1,6 @@
-#Simple Cloud Foundry toolchain
+#AIF Hyper Speed Development Extention toolchain template
 
-This Hello World application uses Node.js and includes a DevOps toolchain that is preconfigured for continuous delivery, source control, issue tracking, and online editing.
+With this toolchain template, you can create a toolchain for AIF build, deploy and testing automation. To use this toolchain template as a testing automation tool on Bluemix, a java runtime and a Cloudant noSQLDB should be prepared with Java Cloudant Web Starter(https://console.bluemix.net/catalog/starters/java-cloudant-web-starter)
 
 To get started, click **Create toolchain**.
 
