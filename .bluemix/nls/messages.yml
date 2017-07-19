@@ -1,6 +1,6 @@
 ---
 template.name: "AIF Hyper Speed Development extension toolchain"
-template.description: "With this toolchain template, you can create a toolchain for AIF build, deploy and testing automation. To use this toolchain template as a testing automation on Bluemix, a java runtime and a Cloudant noSQLDB should be prepared with Java Cloudant Web Starter(https://console.bluemix.net/catalog/starters/java-cloudant-web-starter)."
+template.description: "With this toolchain template, you can create a toolchain for AIF build, deploy and testing automation. To use this toolchain template as a testing automation tool on Bluemix, a java runtime and a Cloudant noSQLDB should be prepared with Java Cloudant Web Starter(https://console.bluemix.net/catalog/starters/java-cloudant-web-starter)."
 template.gettingStarted: "**Your toolchain for AIF Hyper Speed Development extension is ready!**\n**Quick start:** Commit a change to the Git repo to trigger a new build and deployment. For step-by-step instructions, see the [tutorial](https://www.ibm.com/devops/method/tutorials/tutorial_toolchain_flow?task=2) for this toolchain."
 deploy.title: "Sample Deploy Stage"
 deploy.description: "sample toolchain"
