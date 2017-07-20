@@ -8,13 +8,13 @@ With this toolchain template, you can create a toolchain for AIF build, deploy a
 
 To get started, click **Create toolchain**.
 
-#To Bluemix Public
 
-[![Deploy To Bluemix](https://console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.ng.bluemix.net/devops/setup/deploy/?repository=https://github.com/asanos908/test.git)
+[![Deploy To Bluemix](https://github.com/asanos908/test/blob/master/bluemixPublicButton.png)](https://console.ng.bluemix.net/devops/setup/deploy/?repository=https://github.com/asanos908/test.git)
 
-#To Bluemix Dedicated
 
-[![Deploy To Bluemix](https://console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.w3ibm.bluemix.net/devops/setup/deploy/?repository=https://github.com/asanos908/test.git)
+[![Deploy To Bluemix](https://github.com/asanos908/test/blob/master/bluemixDedicatedButton.png)](https://console.w3ibm.bluemix.net/devops/setup/deploy/?repository=https://github.com/asanos908/test.git)
+
+(Dedicated button works only for IBM's dedicated environment)
 
 For more information about toolchains, see [Custom toolchains in one click with IBM Bluemix DevOps Services](https://developer.ibm.com/devops-services/2016/06/16/open-toolchain-with-ibm-bluemix-devops-services/).
 
