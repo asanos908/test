@@ -40,7 +40,7 @@ stages:
       region_id: ${PROD_REGION_ID}
       organization: ${PROD_ORG_NAME}
       space: ${PROD_SPACE_NAME}
-      application: AIF_Stub
+      application: ${STUB_APP_NAME}
     script: |
       #!/bin/bash
       cf push "${CF_APP}" -p StubEar-1.0.1.ear -m 256M --no-start
