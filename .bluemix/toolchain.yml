@@ -43,7 +43,7 @@ services:
           $text: pipeline.yml
         env:
           SAMPLE_REPO: sample-repo
-          CF_APP_NAME: '{{form.pipeline.parameters.prod-app-name}}'
+          AIF_APP_NAME: '{{form.pipeline.parameters.aif-app-name}}'
           PROD_SPACE_NAME: '{{form.pipeline.parameters.prod-space}}'
           PROD_ORG_NAME: '{{form.pipeline.parameters.prod-organization}}'
           PROD_REGION_ID: '{{form.pipeline.parameters.prod-region}}'
@@ -59,7 +59,7 @@ services:
 form:
   pipeline:
     parameters:
-      prod-app-name: '{{services.sample-repo.parameters.repo_name}}'
+      aif-app-name: '{{services.sample-repo.parameters.repo_name}}'
       jmeter-path: ${WORKSPACE}/SFDParent/apache-jmeter-2.8/bin/jmeter
     schema:
       $ref: deploy.json
