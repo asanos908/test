@@ -59,7 +59,11 @@ services:
 form:
   pipeline:
     parameters:
-      aif-app-name: '{{services.sample-repo.parameters.repo_name}}'
-      jmeter-path: ${WORKSPACE}/SFDParent/apache-jmeter-2.8/bin/jmeter
+      aif-app-name: 'AIF_APP_{{timestamp}}'
+      aif-app-url: 'http://aif-app-{{timestamp}}.mybluemix.net'
+      stub-app-name: 'AIF_Stub_APP_{{timestamp}}'
+      stub-app-url: 'http://aif-stub-app-{{timestamp}}.mybluemix.net'
+      jmeter-path: '${WORKSPACE}/SFDParent/apache-jmeter-2.8/bin/jmeter'
+      git-branch-name: 'master'
     schema:
       $ref: deploy.json
