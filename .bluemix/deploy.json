@@ -52,15 +52,36 @@
                 "$ref": "#/messages/deploy.jmeterPathDescription"
             },
             "type": "string",
+        },
+        "git-branch-name": {
+            "description": {
+                "$ref": "#/messages/deploy.gitBranchDescription"
+            },
+            "type": "string",
+        },
+        "stub-app-name": {
+            "description": {
+                "$ref": "#/messages/deploy.stubAppNameDescription"
+            },
+            "type": "string",
+        },
+        "stub-app-url": {
+            "description": {
+                "$ref": "#/messages/deploy.stubAppURLDescription"
+            },
+            "type": "string",
         }
     },
     "required": [
         "prod-region",
         "prod-organization",
         "prod-space",
-        "prod-app-name",
+        "aif-app-name",
         "cloudant-url",
-        "aif-url"
+        "aif-url",
+        "git-branch-name",
+        "stub-app-name",
+        "stub-app-url"
     ],
     "form": [
         {
@@ -84,6 +105,20 @@
             "type": "text",
             "readonly": false,
             "title": {
+                "$ref": "#/messages/deploy.stubAppName"
+            },
+            "key": "stub-app-name"
+        },{
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.stubAppURL"
+            },
+            "key": "stub-app-url"
+        },{
+            "type": "text",
+            "readonly": false,
+            "title": {
                 "$ref": "#/messages/deploy.cloudantURL"
             },
             "key": "cloudant-url"
@@ -101,20 +136,6 @@
                 "$ref": "#/messages/deploy.gitBranchName"
             },
             "key": "git-branch-name"
-        },{
-            "type": "text",
-            "readonly": false,
-            "title": {
-                "$ref": "#/messages/deploy.stubAppName"
-            },
-            "key": "stub-app-name"
-        },{
-            "type": "text",
-            "readonly": false,
-            "title": {
-                "$ref": "#/messages/deploy.stubAppURL"
-            },
-            "key": "stub-app-url"
         },{
             "type": "table",
             "columnCount": 4,
