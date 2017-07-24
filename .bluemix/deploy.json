@@ -66,14 +66,13 @@
         {
             "type": "validator",
             "url": "/devops/setup/bm-helper/helper.html"
-        },
-        {
+        },{
             "type": "text",
             "readonly": false,
             "title": {
-                "$ref": "#/messages/deploy.appName"
+                "$ref": "#/messages/deploy.aifAppName"
             },
-            "key": "prod-app-name"
+            "key": "aif-app-name"
         },{
             "type": "text",
             "readonly": false,
@@ -95,8 +94,28 @@
                 "$ref": "#/messages/deploy.jmeterPath"
             },
             "key": "jmeter-path"
-        },
-        {
+        },{
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.gitBranchName"
+            },
+            "key": "git-branch-name"
+        },{
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.stubAppName"
+            },
+            "key": "stub-app-name"
+        },{
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.stubAppURL"
+            },
+            "key": "stub-app-url"
+        },{
             "type": "table",
             "columnCount": 4,
             "widths": [
