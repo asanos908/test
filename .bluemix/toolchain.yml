@@ -50,6 +50,9 @@ services:
           AIF_URL: '{{form.pipeline.parameters.aif-url}}'
           CLOUDANT_URL: '{{form.pipeline.parameters.cloudant-url}}'
           JMETER_PATH: '{{form.pipeline.parameters.jmeter-path}}'
+          GIT_BRANCH_NAME: '{{form.pipeline.parameters.git-branch-name}}'
+          STUB_APP_NAME: '{{form.pipeline.parameters.stub-app-name}}'
+          STUB_APP_URL: '{{form.pipeline.parameters.stub-app-url}}'
         execute: true
   webide:
     service_id: orion
