@@ -3,7 +3,7 @@ stages:
 - name: Build Stage(Stub)
   inputs:
   - type: git
-    branch: master
+    branch: ${GIT_BRANCH_NAME}
     service: ${SAMPLE_REPO}
   triggers:
   - type: commit
@@ -14,7 +14,7 @@ stages:
   jobs:
   - name: Build
     type: builder
-    working_dir: SFDParent
+    working_dir: StubParent
     artifact_dir: ${WORKSPACE}/StubParent/StubEar/target
     build_type: maven
     script: |-
@@ -43,7 +43,7 @@ stages:
       application: AIF_Stub
     script: |
       #!/bin/bash
-      cf push "${CF_APP}" -p StubEar-0.0.1-SNAPSHOT.ear -m 256M --no-start
+      cf push "${CF_APP}" -p StubEar-1.0.1.ear -m 256M --no-start
       cf set-env ${CF_APP} JBP_CONFIG_LIBERTY "app_archive: {features: [cdi-1.2, concurrent-1.0, jaxb-2.2, jndi-1.0, jaxws-2.2, jsonp-1.0, jaxrs-2.0, javaMail-1.5, json-1.0, jsf-2.2, localConnector-1.0, servlet-3.1, wasJmsClient-2.0, wasJmsServer-1.0, websocket-1.1]}"
       cf start "${CF_APP}"
       # ==== enable shell ==============
@@ -56,7 +56,7 @@ stages:
 - name: Build Stage(AIF)
   inputs:
   - type: git
-    branch: master
+    branch: ${GIT_BRANCH_NAME}
     service: ${SAMPLE_REPO}
   triggers:
   - type: commit
@@ -87,13 +87,10 @@ stages:
   - name: JAVA_HOME
     value: /opt/IBM/java8
     type: text
+  - name: STUB_APP_URL
+    value: ${STUB_APP_URL}
+    type: text
   properties:
-  - name: CF_APP_NAME
-    value: undefined
-    type: text
-  - name: APP_URL
-    value: undefined
-    type: text
   jobs:
   - name: Deploy
     type: deployer
@@ -105,7 +102,7 @@ stages:
     script: |
       #!/bin/bash
       #サーバーパッケージ
-      cp AIF-0.0.1-SNAPSHOT.war wlp/usr/servers/defaultServer/apps/AIF-0.0.1-SNAPSHOT.war
+      cp AIF-0.0.1-SNAPSHOT.war wlp/usr/servers/defaultServer/apps/AIF-1.0.1.war
       chmod +x wlp/bin/*
       wlp/bin/server package defaultServer --archive=was.zip --include=usr
       # アプリのデプロイ、更新
@@ -114,7 +111,9 @@ stages:
       # Liberty用の環境設定
       cf set-env ${CF_APP} JBP_CONFIG_LIBERTY "app_archive: {features: [cdi-1.2, concurrent-1.0, jaxb-2.2, jndi-1.0, jaxws-2.2, jsonp-1.0, jaxrs-2.0, javaMail-1.5, json-1.0, jsf-2.2, localConnector-1.0, servlet-3.1, wasJmsClient-2.0, wasJmsServer-1.0, websocket-1.1,wmqJmsClient-2.0]}"
       # システム変数定義
-      cf set-env ${CF_APP} JVM_ARGS "-Dcom.ibm.cis.aif.log.AIFLogger.isDumpEnable=true -Dcom.ibm.cis.aif.log.AIFLogger.vcapServiceName=cloudantNoSQLDB -Dcom.ibm.cis.aif.interceptor.OBStub.restStub=http://aif-devops-stub.w3ibm.mybluemix.net/StubAppRS"
+      cf set-env ${CF_APP} JVM_ARGS "-Dcom.ibm.cis.aif.log.AIFLogger.isDumpEnable=true -Dcom.ibm.cis.aif.log.AIFLogger.vcapServiceName=cloudantNoSQLDB"
+      # MQ電文でMQコンテナを使用しない場合のStubAppRSのURL指定(MQコンテナを使用する場合はコメントアウトのままでOK)
+      #cf set-env ${CF_APP} JVM_ARGS " -Dcom.ibm.cis.aif.interceptor.OBStub.restStub=${STUB_APP_URL}"
       # 上記設定の反映
       cf restage ${CF_APP}
       # アプリの起動
@@ -123,7 +122,7 @@ stages:
 - name: setEnv
   inputs:
   - type: git
-    branch: master
+    branch: ${GIT_BRANCH_NAME}
     service: ${SAMPLE_REPO}
   triggers:
   - type: stage
@@ -133,6 +132,9 @@ stages:
     type: text
   - name: PATH
     value: ${JAVA_HOME}/bin:$PATH
+    type: text
+  - name: AIF_URL
+    value: ${AIF_URL}
     type: text
   jobs:
   - name: Build
@@ -151,7 +153,7 @@ stages:
 - name: Test Stage
   inputs:
   - type: git
-    branch: master
+    branch: ${GIT_BRANCH_NAME}
     service: ${SAMPLE_REPO}
   triggers:
   - type: stage
