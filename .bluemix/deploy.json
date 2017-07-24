@@ -26,9 +26,9 @@
             "description": "The bluemix space",
             "type": "string"
         },
-        "prod-app-name": {
+        "aif-app-name": {
             "description": {
-                "$ref": "#/messages/deploy.appDescription"
+                "$ref": "#/messages/deploy.aifAppNameDescription"
             },
             "type": "string",
             "pattern": "\\S"
