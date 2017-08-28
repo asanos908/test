@@ -176,8 +176,8 @@ stages:
 - name: Deploy Stage(AIF)
   inputs:
   - type: job
-    stage: Build Stage (AIF Container)
-    job: Container build
+    stage: Build Stage (AIF)
+    job: Build
   triggers:
   - type: stage
   properties:
@@ -203,8 +203,8 @@ stages:
       region_id: ${PROD_REGION_ID}
       organization: ${PROD_ORG_NAME}
       space: ${PROD_SPACE_NAME}
-      api_key: ${API_KEY}
-      kubernetes_cluster: ${PROD_CLUSTER_NAME}
+      api_key: ${BX_API_KEY}
+      kubernetes_cluster: ${CLUSTER_NAME}
     script: |
       #!/bin/bash
       #set -x
