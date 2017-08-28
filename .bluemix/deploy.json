@@ -33,13 +33,6 @@
             "type": "string",
             "pattern": "\\S"
         },
-        "aif-url": {
-            "description": {
-                "$ref": "#/messages/deploy.aifURLDescription"
-            },
-            "type": "string",
-            "pattern": "\\S"
-        },
         "cloudant-url": {
             "description": {
                 "$ref": "#/messages/deploy.cloudantURLDescription"
@@ -65,9 +58,21 @@
             },
             "type": "string",
         },
-        "stub-app-url": {
+        "aif-port": {
             "description": {
-                "$ref": "#/messages/deploy.stubAppURLDescription"
+                "$ref": "#/messages/deploy.aifPortDescription"
+            },
+            "type": "string",
+        },
+        "cluster-name": {
+            "description": {
+                "$ref": "#/messages/deploy.clusterNameDescription"
+            },
+            "type": "string",
+        },
+        "bx-api-key": {
+            "description": {
+                "$ref": "#/messages/deploy.bxApiKeyDescription"
             },
             "type": "string",
         }
@@ -78,10 +83,11 @@
         "prod-space",
         "aif-app-name",
         "cloudant-url",
-        "aif-url",
         "git-branch-name",
         "stub-app-name",
-        "stub-app-url"
+        "bx-api-key",
+        "cluster-name",
+        "aif-port"
     ],
     "form": [
         {
@@ -98,23 +104,9 @@
             "type": "text",
             "readonly": false,
             "title": {
-                "$ref": "#/messages/deploy.aifURL"
-            },
-            "key": "aif-url"
-        },{
-            "type": "text",
-            "readonly": false,
-            "title": {
                 "$ref": "#/messages/deploy.stubAppName"
             },
             "key": "stub-app-name"
-        },{
-            "type": "text",
-            "readonly": false,
-            "title": {
-                "$ref": "#/messages/deploy.stubAppURL"
-            },
-            "key": "stub-app-url"
         },{
             "type": "text",
             "readonly": false,
@@ -137,13 +129,28 @@
             },
             "key": "git-branch-name"
         },{
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.bxApiKey"
+            },
+            "key": "bx-api-key"
+        },{
+            "type": "text",
+            "readonly": false,
+            "title": {
+                "$ref": "#/messages/deploy.aifPort"
+            },
+            "key": "aif-port"
+        },{
             "type": "table",
-            "columnCount": 4,
+            "columnCount": 5,
             "widths": [
-                "15%",
-                "28%",
-                "28%",
-                "28%"
+                "16%",
+                "21%",
+                "21%",
+                "21%",
+                "21%"
             ],
             "items": [
                 {
@@ -171,6 +178,12 @@
                 {
                     "type": "label",
                     "title": {
+                        "$ref": "#/messages/clusterName"
+                    }
+                },
+                {
+                    "type": "label",
+                    "title": {
                         "$ref": "#/messages/prodStage"
                     }
                 },
@@ -181,6 +194,10 @@
                 {
                     "type": "select",
                     "key": "prod-organization"
+                },
+                {
+                    "type": "text",
+                    "key": "cluster-name"
                 },
                 {
                     "type": "select",
