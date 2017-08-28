@@ -52,7 +52,6 @@ stages:
       #cf restage "${CF_APP}"
       # ==== enable logs ===============
       #cf logs "${CF_APP}"
-      
 - name: Build Stage(AIF)
   inputs:
   - type: git
@@ -78,7 +77,6 @@ stages:
       
       cp -r ${WORKSPACE}/dockerfiles ${WORKSPACE}/AIFParent/AIF/target/dockerfiles
       ls ${WORKSPACE}/AIFParent/AIF/target/wlp  
-
 - name: Build Stage (AIF Container)
   inputs:
   - type: job
@@ -102,19 +100,14 @@ stages:
     USE_CACHED_LAYERS: 'true'
     COMMAND: |
       #!/bin/bash
-
       echo -------------start server packaging---------------------
       #!/bin/bash
       #サーバーパッケージ
       cp AIF-1.0.1.war wlp/usr/servers/defaultServer/apps/AIF-1.0.1.war
       chmod +x wlp/bin/*
-      wlp/bin/server package defaultServer --archive=was.zip --include=usr
-      
+      wlp/bin/server package defaultServer --archive=was.zip --include=usr  
       cp wlp/usr/servers/defaultServer/was.zip dockerfiles/was.zip
-      
-      
-      echo -------------start conatiner building-------------------
-      
+      echo -------------start conatiner building-------------------      
       if [ $(cf ic images | grep ${APP_NAME}  | wc -l) -gt 0 ]; then
        echo -e "${red}Image ${APP_NAME} exists in the registory, delete it and re-upload as anew version of the image.${no_color}"
        cf ic rmi $(cf ic images | grep ${APP_NAME} | awk '{print $3}')
@@ -128,12 +121,10 @@ stages:
       #####################
       # Run unit tests    #
       #####################
-      echo -e "${label_color}No unit tests cases have been checked in ${no_color}"
-      
+      echo -e "${label_color}No unit tests cases have been checked in ${no_color}"   
       ######################################
       # Build Container via Dockerfile     #
       ######################################
-
       # REGISTRY_URL=${CCS_REGISTRY_HOST}/${NAMESPACE}
       export FULL_REPOSITORY_NAME=${REGISTRY_URL}/${IMAGE_NAME}:latest  
       cd dockerfiles
@@ -151,8 +142,7 @@ stages:
               BUILD_COMMAND="build --no-cache --tag ${FULL_REPOSITORY_NAME} ${WORKSPACE}/dockerfiles"
               ice_retry ${BUILD_COMMAND}
               RESULT=$?
-          fi 
-  
+          fi   
           if [ $RESULT -ne 0 ]; then
               echo -e "${red}Error building image ${no_color}" | tee -a "$ERROR_LOG_FILE"
               echo "Build command: ice ${BUILD_COMMAND}"
@@ -169,7 +159,6 @@ stages:
           echo -e "${red}Dockerfile not found at the repository root${no_color}"
           exit 1
       fi  
-
       ######################################################################################
       # Copy any artifacts that will be needed for deployment and testing to $WORKSPACE    #
       ######################################################################################
@@ -183,8 +172,7 @@ stages:
       else 
           echo -e "${red}Kubernetes deployment file 'deployment.yml' not found at the repository root${no_color}"
           exit 1
-      fi
-      
+      fi      
 - name: Deploy Stage(AIF)
   inputs:
   - type: job
@@ -208,7 +196,7 @@ stages:
   - name: MQ_REGISTORY
     value: registry.ng.bluemix.net/ibmcom/mq
     type: text 
-   jobs:
+  jobs:
   - name: Deploy Kubernetes Pod
     type: deployer
     target:
@@ -220,7 +208,6 @@ stages:
     script: |
       #!/bin/bash
       #set -x
-      
       #Check cluster availability
       ip_addr=$(bx cs workers $PIPELINE_KUBERNETES_CLUSTER_NAME | grep normal | awk '{ print $2 }')
       if [ -z $ip_addr ]; then
@@ -232,10 +219,8 @@ stages:
       echo ""
       echo "DEPLOYING USING MANIFEST:"
       cd ${WORKSPACE}/dockerfiles
-      
       registory=$(bx cr images | grep ${APP_NAME} | awk '{print $1":"$3}')
       sed -i -e "s|REGISTORY|${registory}|g;s|APPNAME|${APP_NAME}-v${IDS_VERSION}|g;s|APPPORT|${APP_PORT}|g" ${WORKSPACE}/dockerfiles/deployment.yml
-      
       cat ${WORKSPACE}/dockerfiles/deployment.yml
       echo $(kubectl get deploy | grep ${APP_NAME} |wc -l)
       if [ $(kubectl get deploy | grep ${APP_NAME} |wc -l) -gt 0 ]; then
@@ -245,9 +230,7 @@ stages:
       else
        echo No deploy has deteced. ${APP_NAME} will be deployed.
       fi
-      
       kubectl apply -f ${WORKSPACE}/dockerfiles/deployment.yml 
-      
       if [ $(kubectl get deploy | grep MQ |wc -l) -gt 0 ]; then
        echo -e "${red} MQ daployment has already been deployed. ${no_color}"
       else
@@ -255,35 +238,28 @@ stages:
        kubectl run MQ --image=${MQ_REGISTORY}
        kubectl expose deployment/MQ --type=NodePort --port=1414 --name=mq-service --target-port=1414
       fi
-      
       echo ""
       echo "DEPLOYED SERVICE:"
       kubectl describe services ${APP_NAME}-service
-      
       echo ""
       echo "DEPLOYED PODS:"
       kubectl describe pods --selector app=${APP_NAME}
-      
       port=$(kubectl get services | grep ${APP_NAME}-service | sed 's/.*:\([0-9]*\).*/\1/g')
       mq_port=$(kubectl get services | grep mq-service | sed 's/.*:\([0-9]*\).*/\1/g')  
       echo ""
       echo "VIEW THE APPLICATION AT: http://$ip_addr:$port"
-      
       if [ $(curl -s -X PUT ${CLOUDANT_URL}/kubernetescredential | grep "ok" | wc -l) -gt 0 ];then
        echo "kubernetescredential table created"
       fi
-      
       if [ -z $(curl -s -X GET ${CLOUDANT_URL}/kubernetescredential/kubecred --head | grep 'ETag' | awk -F\" '{print $2}') ];then
        echo "kubecred file hadn't been created."
       else
        echo "The record kubecred is deteced."
        curl -s -X DELETE ${CLOUDANT_URL}/kubernetescredential/kubecred?rev=$(curl -s -X GET ${CLOUDANT_URL}/kubernetescredential/kubecred --head | grep 'ETag' | awk -F\" '{print $2}')
       fi
-      
       json={\"aif_url\":\"http://${ip_addr}\",\"aif_port\":\"${port}\",\"mq_port\":\"${mq_port}\" }
       echo $json
       curl -X PUT ${CLOUDANT_URL}/kubernetescredential/kubecred -d ${json}
-
 - name: setEnv
   inputs:
   - type: git
