@@ -172,13 +172,13 @@
                 {
                     "type": "label",
                     "title": {
-                        "$ref": "#/messages/space"
+                        "$ref": "#/messages/clusterName"
                     }
                 },
                 {
                     "type": "label",
                     "title": {
-                        "$ref": "#/messages/clusterName"
+                        "$ref": "#/messages/space"
                     }
                 },
                 {
