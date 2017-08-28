@@ -58,7 +58,7 @@ stages:
     branch: ${GIT_BRANCH_NAME}
     service: ${SAMPLE_REPO}
   triggers:
-  - type: commit
+  - type: stage
   properties:
   - name: JAVA_HOME
     value: /opt/IBM/java8
@@ -80,7 +80,7 @@ stages:
 - name: Build Stage (AIF Container)
   inputs:
   - type: job
-    stage: Build Stage(AIF Container)
+    stage: Build Stage(AIF)
     job: Build
   triggers:
   - type: commit
@@ -91,7 +91,7 @@ stages:
   jobs:
   - name: Container build
     type: builder
-    build_type: ibm.devops.services.pipeline.container.builder
+    extension_id: ibm.devops.services.pipeline.container.builder
     target:
       region_id: ${PROD_REGION_ID}
       organization: ${PROD_ORG_NAME}
