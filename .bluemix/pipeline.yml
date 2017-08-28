@@ -91,7 +91,6 @@ stages:
   jobs:
   - name: Container build
     type: builder
-    build_type: ibm.devops.services.pipeline.container.builder
     extension_id: ibm.devops.services.pipeline.container.builder
     target:
       region_id: ${PROD_REGION_ID}
