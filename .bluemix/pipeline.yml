@@ -83,7 +83,7 @@ stages:
     stage: Build Stage(AIF)
     job: Build
   triggers:
-  - type: commit
+  - type: stage
   properties:
   - name: JAVA_HOME
     value: /opt/IBM/java8
