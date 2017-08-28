@@ -80,7 +80,7 @@ stages:
 - name: Build Stage (AIF Container)
   inputs:
   - type: job
-    stage: Build Stage(AIF)
+    stage: Build Stage(AIF Container)
     job: Build
   triggers:
   - type: commit
@@ -91,7 +91,7 @@ stages:
   jobs:
   - name: Container build
     type: builder
-    extension_id: ibm.devops.services.pipeline.container.builder
+    build_type: ibm.devops.services.pipeline.container.builder
     target:
       region_id: ${PROD_REGION_ID}
       organization: ${PROD_ORG_NAME}
