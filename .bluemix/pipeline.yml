@@ -96,7 +96,7 @@ stages:
       region_id: ${PROD_REGION_ID}
       organization: ${PROD_ORG_NAME}
       space: ${PROD_SPACE_NAME}
-    IMAGE_NAME: ${CF_APP_NAME}
+    IMAGE_NAME: ${AIF_APP_NAME}
     USE_CACHED_LAYERS: 'true'
     COMMAND: |
       #!/bin/bash
